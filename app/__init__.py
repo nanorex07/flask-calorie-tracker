@@ -1,6 +1,5 @@
 from flask import Flask
-from .auth import auth
-from .home import home
+
 from .config import SECRET_KEY, SQLALCHEMY_DATABASE_URI
 from flask_login import LoginManager
 from .models import db, User
@@ -25,5 +24,10 @@ with app.app_context():
     db.create_all()
 
 # blueprints
+from .auth import auth
+from .home import home
+from .tracker import tracker
+
 app.register_blueprint(home, url_prefix="/")
 app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(tracker, url_prefix="/tracker")

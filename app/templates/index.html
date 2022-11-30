@@ -8,21 +8,11 @@
 </head>
 
 <body>
-
-    {% if user.is_authenticated %}
-    <div align="center">
-        <h3> {{ user.name }} </h3>
-        <h4> {{ user.email }} </h4>
-        <img src="{{ user.profile_pic }}" alt="User Pic"><br>
-        <a href="{{ url_for('auth.logout') }}">Logout </a>
-    </div>
-    {% else %}
     <p align="center">
         <a href="{{ url_for('auth.login') }}">
             Login with Google
         </a>
     </p>
-    {% endif %}
 </body>
 
 </html>
