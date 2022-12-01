@@ -1,92 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calorie Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-</head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-item m-2">
-                    <img src="{{ user.profile_pic }}" class="rounded mx-auto me-2" width="40" height="40" alt="">
-                    <a class="navbar-brand">{{ user.name }}</a>
-                    <span class="nav-text text-light">{{ user.email }}</span>
-                </div>
-            </div>
-            <div class="navbar-item">
-                <a class="navbar-link" href="{{ url_for('auth.logout') }}"><button
-                        class="btn btn-danger me-2 flex-grow-1">Logout</button>
-                </a>
-                <a class="navbar-link" href="{{ url_for('home.index') }}"><button
-                        class="btn btn-primary flex-grow-1">Home</button>
-                </a>
-            </div>
-        </div>
-    </nav>
+{% block title %}Dashboard{% endblock %}
 
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-        <div class="container-sm">
-            <form class="d-flex p-3" action="{{ url_for('tracker.track') }}" method="POST">
-                <input class="form-control me-2" type="text" name="name" placeholder="item name..."
-                    aria-label="name"><br>
-                <input class="form-control me-2" type="text" name="calories" placeholder="calorific value..."
-                    aria-label="calories">
-                <button class="btn btn-outline-primary flex-grow-1" type="submit">Add</button>
-            </form>
-        </div>
-
-        <div class="container">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <div class=flashes>
-                {% for message in messages %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Failed !</strong> {{ message }}.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-item m-2">
+                <img src="{{ user.profile_pic }}" class="rounded mx-auto me-2" width="40" height="40" alt="">
+                <a class="navbar-brand">{{ user.name }}</a>
+                <span class="nav-text text-light">{{ user.email }}</span>
             </div>
-            {% endif %}
-            {% endwith %}
-
-
-            <table class="table table-striped table caption-top table-responsive text-center">
-                <caption>
-                    <p class="fs-5 lead">So far, {{ user.items|count }} items</p>
-                </caption>
-                <thead class="table-secondary">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Calorie</th>
-                        <th scope="col">Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in user.items %}
-                    <tr>
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.calories }}</td>
-                        <td>{{ item.timestamp.strftime('%-d %b %Y, %I:%M%p') }}</td>
-                    </tr>
-                    {% endfor %}
-
-                </tbody>
-            </table>
+        </div>
+        <div class="navbar-item">
+            <a class="navbar-link" href="{{ url_for('auth.logout') }}"><button
+                    class="btn btn-danger me-2 flex-grow-1">Logout</button>
+            </a>
+            <a class="navbar-link" href="{{ url_for('home.index') }}"><button
+                    class="btn btn-primary flex-grow-1">Home</button>
+            </a>
         </div>
     </div>
-</body>
+</nav>
 
-</html>
+<div class="container-fluid">
+    <div class="container-sm">
+        <form class="d-flex p-3" action="{{ url_for('tracker.track') }}" method="POST">
+            <input class="form-control me-2" type="text" name="name" placeholder="item name..." aria-label="name"><br>
+            <input class="form-control me-2" type="text" name="calories" placeholder="calorific value..."
+                aria-label="calories">
+            <button class="btn btn-outline-primary flex-grow-1" type="submit">Add</button>
+        </form>
+    </div>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class=flashes>
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Failed !</strong> {{ message }}.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+
+        <table class="table table-striped table caption-top table-responsive text-center">
+            <caption>
+                <p class="fs-5 lead">So far, {{ user.items|count }} items</p>
+            </caption>
+            <thead class="table-secondary">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Calorie</th>
+                    <th scope="col">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in user.items %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.calories }}</td>
+                    <td>{{ item.timestamp.strftime('%-d %b %Y, %I:%M%p') }}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
