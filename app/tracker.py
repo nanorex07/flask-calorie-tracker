@@ -11,7 +11,6 @@ def track():
     if request.method == "POST":
         name = request.form.get("name").strip()
         calories = request.form.get("calories").strip()
-
         if not name or not calories or not calories.isdigit():
             flash("Can't add, empty or improper fields", category="error")
         else:

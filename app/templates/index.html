@@ -1,18 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calorie Tracker</title>
-</head>
 
-<body>
-    <p align="center">
-        <a href="{{ url_for('auth.login') }}">
-            Login with Google
-        </a>
-    </p>
-</body>
+{% block title %}Home{% endblock %}
 
-</html>
+{% block content %}
+<div class="p-4 bg-dark text-white text-center">
+    <h1>Simple Calorie Tracker</h1>
+    <div class="container-fluid d-flex mt-4 justify-content-center">
+        {% if current.is_authenticated %}
+        <a class="btn btn-danger btn-md me-2" href="{{ url_for('auth.logout') }}">Logout</a>
+        <a class="btn btn-success btn-md" href="{{ url_for('tracker.track') }}">Dashboard</a>
+
+        {% else %}
+        <div class="col-md-12">
+            <a class="btn btn-success btn-md" href="{{ url_for('auth.login') }}">Google Signup</a>
+        </div>
+
+        {% endif %}
+    </div>
+    <br>
+</div>
+<div class="container">
+    <p class="fs-2 text-center mt-2">Registerd Users</p>
+    <div class="row p-2">
+        {% for user in users %}
+        {% if current.id != user.id %}
+        <div class="col">
+            <div class="card text-center">
+                <img src="{{ user.profile_pic }}" style="width: 10em; height: 10em"
+                    class="text-center mx-auto d-block mt-2 card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ user.name }}</h5>
+                    <p class="card-text">{{ user.email }}</p>
+                    <a href="#" class="btn btn-primary">Explore</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
