@@ -35,7 +35,6 @@ def callback():
     google = oauth.create_client("google")
     token = google.authorize_access_token()
     res = google.parse_id_token(token, nonce="")
-    print(" Google User ", res)
     user = User.query.filter_by(email=res["email"]).first()
     if not user:
         user = User(
