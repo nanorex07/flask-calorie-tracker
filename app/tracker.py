@@ -43,3 +43,19 @@ def delete_item(id: int):
         db.session.delete(item)
         db.session.commit()
     return redirect(url_for("tracker.track"))
+
+
+@login_required
+@tracker.route("/item/edit/<id>", methods=["POST"])
+def edit_item(id: int):
+    if request.method == "POST":
+        name = request.form.get("name").strip()
+        calories = request.form.get("calories").strip()
+        if not name or not calories or not calories.isdigit():
+            flash("Can't edit item, empty or improper fields", category="error")
+        else:
+            Item.query.filter_by(id=id, user=current_user).update(
+                dict(name=name, calories=calories)
+            )
+            db.session.commit()
+    return redirect(url_for("tracker.track"))
