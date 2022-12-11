@@ -26,10 +26,13 @@ def track():
             item = Item(name=name, calories=calories, user=current_user)
             db.session.add(item)
             db.session.commit()
-    pass_user = request.args.get("user")
-    if pass_user:
-        return render_template("tracker.html", user=pass_user)
-    return render_template("tracker.html", user=current_user)
+
+    page = request.args.get("page", 1, type=int)
+    user = current_user
+
+    items = Item.query.filter_by(user=user)
+    pagination = items.paginate(page=page, per_page=2)
+    return render_template("tracker.html", pagination=pagination, user=user)
 
 
 @login_required
