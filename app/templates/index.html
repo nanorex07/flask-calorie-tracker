@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="p-4 bg-dark text-white text-center">
-    <h1>Simple Calorie Tracker</h1>
+    <h1>Calorie Tracker</h1>
     <div class="container-fluid d-flex mt-4 justify-content-center">
         {% if current.is_authenticated %}
         <a class="btn btn-danger btn-md me-2" href="{{ url_for('auth.logout') }}">Logout</a>

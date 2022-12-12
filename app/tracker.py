@@ -1,6 +1,7 @@
 from flask import Blueprint, flash, render_template, request, abort, redirect, url_for
 from flask_login import current_user, login_required
 from .models import db, Item, User
+from config import PAGINATION_LIMIT
 
 tracker = Blueprint("tracker", __name__)
 
@@ -8,8 +9,11 @@ tracker = Blueprint("tracker", __name__)
 @tracker.route("/<id>", methods=["GET"])
 def track_with_id(id: str):
     user = User.query.filter_by(id=id).first()
+    page = request.args.get("page", 1, type=int)
+    items = Item.query.filter_by(user=user)
+    pagination = items.paginate(page=page, per_page=PAGINATION_LIMIT)
     if user:
-        return render_template("user.html", user=user)
+        return render_template("user.html", user=user, pagination=pagination)
 
     return abort(404)
 
@@ -31,7 +35,7 @@ def track():
     user = current_user
 
     items = Item.query.filter_by(user=user)
-    pagination = items.paginate(page=page, per_page=2)
+    pagination = items.paginate(page=page, per_page=PAGINATION_LIMIT)
     return render_template("tracker.html", pagination=pagination, user=user)
 
 
