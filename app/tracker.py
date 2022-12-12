@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, render_template, request, abort, redirect, url_for
 from flask_login import current_user, login_required
 from .models import db, Item, User
-from config import PAGINATION_LIMIT
+from .config import PAGINATION_LIMIT
 
 tracker = Blueprint("tracker", __name__)
 
